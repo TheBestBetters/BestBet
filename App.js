@@ -1,11 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, TextInput, Text, View } from 'react-native';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      amountToInvest: '',
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+        <Text>{this.state.amountToInvest}</Text>
+        <TextInput
+          style={{height: 40, width: 100, borderColor: 'gray', borderWidth: 1}}
+          onChangeText={(text) => this.setState({amountToInvest: text})}
+          value={this.state.amountToInvest}
+        />
       </View>
     );
   }
