@@ -73,54 +73,49 @@ export default class App extends Component {
         {
           this.state.fontLoaded ? (
             <View style={styles.container}>
+
               <Text style={{fontFamily: 'roboto-slab-bold',
-                            fontSize: 36, color: '#008000'}}>
+                            fontSize: 36, color: '#008000', marginBottom: 10}}>
                 BE$T BET
               </Text>
-              <Text style={{ fontFamily: 'roboto-slab-regular' }}> What is the amount that you want to invest?</Text>
+
+              <Text style={styles.q}>How much would you like to invest?</Text>
               <TextInput
-                style={{height: 40, width: 100, borderColor: 'gray', borderWidth: 1,
-                        paddingBottom: 10}}
+                style={styles.box} textAlign={'center'} placeholder = "$"
                 multiline={false} keyboardType="numeric"
                 onChangeText={(text) => this.setState({amountToInvest: text})}
                 value={this.state.amountToInvest}
               />
-              <Text style={{ fontFamily: 'roboto-slab-regular' }} >What is the amount that you want to have?</Text>
+
+              <Text style={styles.q}>How much would you like to have?</Text>
               <TextInput
-                style={{fontFamily: 'roboto-slab-regular', height: 40,
-                        width: 100, borderColor: 'gray', borderWidth: 1,
-                        paddingBottom: 10}}
+                style={styles.box} textAlign={'center'} placeholder = "$"
                 multiline={false} keyboardType="numeric"
                 onChangeText={(text) => this.setState({amountDesired: text})}
                 value={this.state.amountDesired}
               />
-              <Text style={{ fontFamily: 'roboto-slab-regular' }} >How long are you willing to invest?</Text>
-              <View style={{height: 40, flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
-                <TextInput
-                  style={{fontFamily: 'roboto-slab-regular',
-                    flex: 1, height: 40, borderWidth: 1, maxWidth: 100,
-                    borderColor: this.state.hasValidInvestmentMagnitude ? 'gray' : 'red'}}
+              <Text style={styles.q}>When would you like to achieve your goal by?</Text>
+              <View style={{height: 40, flexDirection: 'row', justifyContent: 'center'}}>
+                <TextInput 
+                  style={styles.box} textAlign={'center'} placeholder = "#"
                   multiline={false} keyboardType="numeric"
                   onChangeText={(text) => this.setState({investmentPeriodMagnitude: text})}
                   value={this.state.investmentPeriodMagnitude}
                 />
-                <Text style={{fontFamily: 'roboto-slab-regular', flex: 1,
-                              height: 40, paddingTop: 10, paddingLeft: 10,
-                              maxWidth: 100}}
+                <Text style={styles.dropdown} textAlign={'center'}
                       onPress={this.openUnitPicker.bind(this)}>
                   {this.state.investmentPeriodUnits}
                 </Text>
               </View>
+
               <Modal isVisible={this.state.isUnitModalOpen}
-                    style={{backgroundColor: 'white', paddingLeft: 22, paddingRight: 22,
-                            paddingTop: 0, paddingBottom: 0,
-                            maxHeight: 250, marginTop: 'auto',
-                            justifyContent: "center", alignItems: "center",
-                            borderRadius: 4, borderColor: "rgba(0, 0, 0, 0.1)"}}
+                    style={{backgroundColor: 'white',
+                            maxHeight: 200, marginTop: 'auto',
+                            justifyContent: 'center', alignItems: "center",
+                            borderRadius: 5, borderColor: "rgba(0, 0, 0, 0.1)"}}
                     onBackdropPress={() => this.setState({ isUnitModalOpen: false })}>
-                <View>
+                <View style={{width: 100, marginTop:10}}>
                   <Picker
-                    style={{width: 100, bottom: 0}}
                     selectedValue={this.state.investmentPeriodUnits}
                     onValueChange={(itemValue, itemIndex) =>
                       this.setState({investmentPeriodUnits: itemValue},
@@ -130,13 +125,21 @@ export default class App extends Component {
                   </Picker>
                   <TouchableOpacity onPress={this.openUnitPicker.bind(this)}>
                     <Text style={{fontFamily: 'roboto-slab-regular',
-                      fontSize: 12, marginLeft: 'auto', marginRight: 'auto',
-                      marginBottom: 10}}>
+                      fontSize: 12}}>
                       Close
                     </Text>
                   </TouchableOpacity>
                 </View>
               </Modal>
+
+              <View style={styles.calc}>
+              <Button
+                  onPress={() => {
+                    Alert.alert('You tapped the button!');
+                  }}
+                  title="Calculate"
+              />
+              </View>
             </View>
           ) : null
         }
@@ -149,8 +152,39 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 140,
-    backgroundColor: '#fff',
+    paddingTop: 160,
+    backgroundColor: '#ffffff',
     alignItems: 'center',
   },
+
+  box: {
+    height: 35,
+    width: 120,
+    borderWidth: 0,
+    backgroundColor: '#efefef',
+    margin: 10
+  },
+
+  calc: {
+    marginTop: 30,
+    borderWidth: 2,
+    borderRadius: 3,
+    borderColor: '#007aff'
+  },
+
+  q: {
+    fontFamily: 'roboto-slab-regular',
+    margin: 10
+  },
+
+  dropdown: {
+    fontFamily: 'roboto-slab-regular', 
+    height: 35,
+    margin: 10,
+    padding: 5,
+    maxWidth: 100,
+    borderWidth: 0.75,
+    borderRadius: 3,
+    borderColor: '#007aff'
+  }
 });
