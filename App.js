@@ -6,10 +6,16 @@ import {
 } from 'react-native';
 
 import Modal from "react-native-modal";
+import { StackNavigator } from 'react-navigation';
 
 const ALLOWABLE_MONTHS = 12;
 const ALLOWABLE_DAYS = 366;
 const ALLOWABLE_WEEKS = 52;
+
+// const App = StackNavigator({
+//   Home: { screen: HomeScreen },
+//   Calculate: { screen: CalculateScreen },
+// });
 
 function validateInvestmentMagnitude(instance) {
   var investmentPeriodUnits = instance.state.investmentPeriodUnits;
@@ -29,7 +35,11 @@ function validateInvestmentMagnitude(instance) {
   }
 }
 
-export default class App extends Component {
+class HomeScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Home',
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -42,6 +52,7 @@ export default class App extends Component {
       fontLoaded: false
     }
   }
+
   async componentDidMount() {
     await Font.loadAsync({
       'roboto-slab-bold': require('./assets/fonts/RobotoSlab-Bold.ttf'),
@@ -52,6 +63,7 @@ export default class App extends Component {
 
     this.setState({ fontLoaded: true });
   }
+
   checkAndWarnInvestmentMagnitude() {
     if (this.state.investmentPeriodMagnitude == '') {
       return;
@@ -60,13 +72,25 @@ export default class App extends Component {
       hasValidInvestmentMagnitude: validateInvestmentMagnitude(this)
     });
   }
+
   openUnitPicker() {
     console.log('Open modal');
     this.setState({
       isUnitModalOpen: !this.state.isUnitModalOpen
     });
   }
+
+  goToCalculate() {
+    this.props.navigation.navigate('Calculate', {
+      toInvest: this.state.amountToInvest,
+      desired: this.state.amountDesired,
+      timeframe: this.state.investmentPeriodMagnitude,
+      daymonth: this.state.investmentPeriodUnits,
+    })    
+  }
+
   render() {
+    //const { navigate } = this.props.navigation;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{flex: 1, flexDirection: 'column'}}>
@@ -87,7 +111,7 @@ export default class App extends Component {
                 value={this.state.amountToInvest}
               />
 
-              <Text style={styles.q}>How much would you like to have?</Text>
+              <Text style={styles.q}>How much would you like to gain?</Text>
               <TextInput
                 style={styles.box} textAlign={'center'} placeholder = "$"
                 multiline={false} keyboardType="numeric"
@@ -134,10 +158,10 @@ export default class App extends Component {
 
               <View style={styles.calc}>
               <Button
-                  onPress={() => {
-                    Alert.alert('You tapped the button!');
-                  }}
                   title="Calculate"
+                  onPress={() => 
+                    {this.state.amountToInvest < this.state.amountDesired ? this.goToCalculate() : null}
+                  }
               />
               </View>
             </View>
@@ -149,10 +173,61 @@ export default class App extends Component {
   }
 }
 
+class CalculateScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Calculate',
+  };
+  render() {
+    const { params } = this.props.navigation.state;
+    const toInvest = params ? params.toInvest : null;
+    const desired = params ? params.desired : null;
+    const timeframe = params ? params.timeframe : null;
+    const daytime = params ? params.daymonth : null;
+
+    return (
+      <View style={styles.container}>
+        <Text style={{fontFamily: 'roboto-slab-bold',
+                            fontSize: 18, color: '#008000', padding: 20}}>
+          With ${toInvest}, and to achieve your goal of ${desired} in {timeframe} {daytime}, 
+          here is your best bet:
+        </Text>
+        <Text>Loading...</Text>
+        <View style={styles.calc}>
+        <Button
+          title="Go back"
+          onPress={() => this.props.navigation.goBack()}
+        />
+        </View>
+      </View>
+    );
+  }
+}
+
+const RootStack = StackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+    },
+    Calculate: {
+      screen: CalculateScreen,
+    }
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
+
+export default class App extends React.Component {
+  render() {
+    return <RootStack />;
+  }
+}
+
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    paddingTop: 160,
+    paddingTop: 100,
     backgroundColor: '#ffffff',
     alignItems: 'center',
   },
@@ -181,7 +256,7 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-slab-regular', 
     height: 35,
     margin: 10,
-    padding: 5,
+    padding: 7,
     maxWidth: 100,
     borderWidth: 0.75,
     borderRadius: 3,
