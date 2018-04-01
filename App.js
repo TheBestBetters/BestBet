@@ -49,7 +49,8 @@ class HomeScreen extends React.Component {
       investmentPeriodUnits: 'days',
       hasValidInvestmentMagnitude: true,
       isUnitModalOpen: false,
-      fontLoaded: false
+      fontLoaded: false,
+      // isErrorModalOpen: false
     }
   }
 
@@ -97,7 +98,43 @@ class HomeScreen extends React.Component {
         }  
       }
     }
+    //ErrorScreen.displayErrorModal();
     return false;
+  }
+
+  // displayErrorModal() {
+  //   this.state.isErrorModalOpen = true;
+
+  //   // render() {
+  //   //   return(
+  //   //     <Modal animationType = {"slide"} isVisible={this.state.isErrorModalOpen}
+  //   //           style={{backgroundColor: 'white',
+  //   //                 maxHeight: 200, marginTop: 'auto',
+  //   //                 justifyContent: 'center', alignItems: "center",
+  //   //                 borderRadius: 5, borderColor: "rgba(0, 0, 0, 0.1)"}}
+  //   //           onBackdropPress={() => this.setState({ isErrorModalOpen: false })}>
+  //   //       <View style={{width: 100, marginTop:10}}>
+  //   //         <Text>You must enter a valid input</Text>
+  //   //       </View>
+  //   //     </Modal>        
+  //   //   )
+  //   // }
+
+
+  // }
+
+  fetchData() {
+    fetch('https://bestbets-199811.appspot.com', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json', 'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        principle: this.state.amountToInvest,
+        target: this.state.amountDesired,
+        term: this.state.investmentPeriodMagnitude,
+      }),
+    });
   }
 
   render() {
