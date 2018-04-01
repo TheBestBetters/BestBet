@@ -89,6 +89,17 @@ class HomeScreen extends React.Component {
     })    
   }
 
+  satisfiedConditions() {
+    if (this.state.amountToInvest < this.state.amountDesired && this.state.amountToInvest > 0) {
+      if (this.state.amountToInvest != '' && this.state.amountDesired != '' && this.state.investmentPeriodMagnitude != '') {
+        if (!isNaN(this.state.amountToInvest) && !isNaN(this.state.amountDesired) && !isNaN(this.state.investmentPeriodMagnitude)) {
+          return true;
+        }  
+      }
+    }
+    return false;
+  }
+
   render() {
     //const { navigate } = this.props.navigation;
     return (
@@ -160,7 +171,7 @@ class HomeScreen extends React.Component {
               <Button
                   title="Calculate"
                   onPress={() => 
-                    {this.state.amountToInvest < this.state.amountDesired ? this.goToCalculate() : null}
+                    {this.satisfiedConditions() ? this.goToCalculate() : null}
                   }
               />
               </View>
