@@ -187,6 +187,10 @@ class HomeScreen extends React.Component {
 class CalculateScreen extends React.Component {
   static navigationOptions = {
     title: 'Calculate',
+    headerStyle: {
+      backgroundColor: '#008000',
+    },
+    headerTintColor: 'white'
   };
   render() {
     const { params } = this.props.navigation.state;
@@ -203,6 +207,10 @@ class CalculateScreen extends React.Component {
           here is your best bet:
         </Text>
         <Text>Loading...</Text>
+        <Text style={{fontFamily: 'roboto-slab-bold',
+                            fontSize: 18, color: '#008000', padding: 20}}>
+          To improve your odds, you need to either reduce your target or increase the time period.
+        </Text>
         <View style={styles.calc}>
         <Button
           title="Go back"
