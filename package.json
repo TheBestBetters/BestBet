@@ -6,8 +6,12 @@
     "react": "16.3.0-alpha.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz",
     "react-native-modal": "^5.4.0",
+<<<<<<< HEAD
     "react-navigation": "^1.5.9",
     "react-textselect": "^0.2.0"
+=======
+    "react-navigation": "^1.5.9"
+>>>>>>> 7e4bae856d42b1ff20ce1dc9267562a9977d3f4b
   },
   "devDependencies": {
     "eslint-config-google": "^0.9.1"
